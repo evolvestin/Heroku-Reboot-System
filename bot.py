@@ -18,7 +18,7 @@ objects.environmental_files()
 bot = objects.start_main_bot('async', os.environ['TOKEN'])
 dispatcher = Dispatcher(bot)
 # ========================================================================================================
-#objects.start_message(os.environ['TOKEN'], stamp1)
+objects.start_message(os.environ['TOKEN'], stamp1)
 
 
 @dispatcher.message_handler()
