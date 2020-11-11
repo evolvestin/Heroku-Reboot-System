@@ -1,0 +1,8 @@
+aiogram==2.9
+heroku3==4.2.3
+gspread>=3.6.0
+requests>=2.20.0
+e-objects>=1.0.13
+beautifulsoup4==4.8.0
+more-itertools==8.2.0
+pyTelegramBotAPI==3.7.3
