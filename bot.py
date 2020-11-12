@@ -9,16 +9,15 @@ from aiogram import types
 from datetime import datetime
 from aiogram.utils import executor
 from aiogram.dispatcher import Dispatcher
-from objects import executive as send_dev_error
-from objects import async_exec as async_executive
+stamp1 = objects.time_now()
 sleep(60)
 idMe = 396978030
-stamp1 = objects.time_now()
+Auth = objects.AuthCentre(os.environ['TOKEN'])
+bot = Auth.start_main_bot('async')
 objects.environmental_files()
-bot = objects.start_main_bot('async', os.environ['TOKEN'])
 dispatcher = Dispatcher(bot)
+Auth.start_message(stamp1)
 # ========================================================================================================
-objects.start_message(os.environ['TOKEN'], stamp1)
 
 
 @dispatcher.message_handler()
@@ -52,8 +51,8 @@ async def swap_heroku_accounts(server):
                 text_server = 'второй'
             if day == day_server and hours == 10:
                 title = 'Переходим на ' + text_server + ' (' + code(server.capitalize()) + ') сервер heroku'
-                dev = objects.send_dev_message(title + '\n' + objects.log_time(tag=code), tag=None, good=True)
                 worksheet = gspread.service_account('reboot1.json').open('heroku cloud').worksheet('keys')
+                dev = Auth.send_dev_message(title + '\n' + objects.log_time(tag=code), tag=None)
                 raw_users = worksheet.get('A1:Z50000', major_dimension='ROWS')
                 update_users = {}
                 row_id = 0
@@ -88,7 +87,7 @@ async def swap_heroku_accounts(server):
                         except IndexError and Exception as error:
                             error = str(error) + '\n\nTroubles:\n' + \
                                     user[connect] + ' ' * 5 + user[connect + 1] + ' ' * 5 + user[connect + 2]
-                            send_dev_error(error)
+                            Auth.executive(error)
 
                 worksheet = gspread.service_account('reboot1.json').open('heroku cloud').worksheet('keys')
                 for user_row in update_users:
@@ -97,11 +96,11 @@ async def swap_heroku_accounts(server):
                         user_range[i].value = update_users[user_row][i]
                     worksheet.update_cells(user_range)
                     await asyncio.sleep(2)
-                objects.edit_dev_message(dev, '\n' + objects.log_time(tag=code))
+                Auth.edit_dev_message(dev, '\n' + objects.log_time(tag=code))
                 await asyncio.sleep(3000)
             await asyncio.sleep(1000)
         except IndexError and Exception:
-            await async_executive()
+            await Auth.async_exec()
 
 
 if __name__ == '__main__':
