@@ -40,16 +40,16 @@ async def swap_heroku_accounts(server):
             day = int(datetime.utcfromtimestamp(int(stamp + 3 * 60 * 60)).strftime('%d'))
             hours = int(datetime.utcfromtimestamp(int(stamp + 3 * 60 * 60)).strftime('%H'))
             if server.lower() == 'one':
+                day_server = 18
+                scale_first = 0
+                scale_second = 1
+                text_server = 'второй'
+            else:
                 day_server = 1
                 scale_first = 1
                 scale_second = 0
                 text_server = 'первый'
-            else:
-                day_server = 17
-                scale_first = 0
-                scale_second = 1
-                text_server = 'второй'
-            if day == day_server and hours == 10:
+            if day == day_server and hours == 12:
                 title = 'Переходим на ' + text_server + ' (' + code(server.capitalize()) + ') сервер heroku'
                 worksheet = gspread.service_account('reboot1.json').open('heroku cloud').worksheet('keys')
                 dev = Auth.send_dev_message(title + '\n' + objects.log_time(tag=code), tag=None)
